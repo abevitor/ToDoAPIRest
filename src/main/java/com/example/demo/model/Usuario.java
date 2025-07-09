@@ -34,12 +34,28 @@ public class Usuario {
         return nome;
     }
 
+    public String getSenha(){
+        return senha;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setId(Long Id) {
         this.Id = Id;
     }
 
     public void setNome(String nome){
         this.nome = nome;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
 
