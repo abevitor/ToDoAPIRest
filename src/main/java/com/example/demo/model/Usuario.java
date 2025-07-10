@@ -10,7 +10,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @NotBlank
     private String nome;
@@ -27,7 +27,7 @@ public class Usuario {
 
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public String getNome(){
@@ -42,8 +42,8 @@ public class Usuario {
         return email;
     }
 
-    public void setId(Long Id) {
-        this.Id = Id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setNome(String nome){

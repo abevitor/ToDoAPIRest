@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-
+@RestController
+@RequestMapping("/tarefas")
 public class TarefaController {
 
     @Autowired
@@ -17,10 +18,14 @@ public class TarefaController {
         return tarefaService.listarPorUsuario(usuarioId);
     }
 
-
     @GetMapping("{id}")
     public Tarefa buscarPorId(@PathVariable Long id) {
         return tarefaService.buscarPorId(id);
+    }
+
+    @GetMapping
+    public List<Tarefa> listarTodas() {
+        return tarefaService.listarTodas();
     }
 
     @PostMapping
@@ -37,6 +42,4 @@ public class TarefaController {
     public void deletarTarefa(@PathVariable Long id) {
         tarefaService.deletar(id);
     }
-
-    
 }

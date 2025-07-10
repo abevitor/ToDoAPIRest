@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TarefaService {
@@ -13,26 +14,26 @@ public class TarefaService {
     @Autowired
     private TarefaRepository tarefaRepository;
 
-
-    public List<Tarefa> listarPorUsuario(Long usuarioId){
+    public List<Tarefa> listarPorUsuario(Long usuarioId) {
         return tarefaRepository.findByUsuarioId(usuarioId);
     }
 
     public Tarefa buscarPorId(Long id) {
-        return tarefaRepository.findById(id)
-        .orElseThrow(() ->  new RuntimeException("Tarefa não encontrada."));
+        Optional<Tarefa> tarefa = tarefaRepository.findById(id);
+        return tarefa.orElse(null); // ou lançar exceção, conforme seu design
+    }
+
+    public List<Tarefa> listarTodas() {
+        return tarefaRepository.findAll();
     }
 
     public Tarefa salvar(Tarefa tarefa) {
         return tarefaRepository.save(tarefa);
     }
 
-    public Tarefa atualizar(Long id, Tarefa novaTarefa) {
-        Tarefa existente = buscarPorId(id);
-        existente.setTitulo(novaTarefa.getTitulo());
-        existente.setDescricao(novaTarefa.getDescricao());
-        existente.setConcluida(novaTarefa.getConcluida());
-        return tarefaRepository.save(existente);
+    public Tarefa atualizar(Long id, Tarefa tarefa) {
+        tarefa.setId(id);
+        return tarefaRepository.save(tarefa);
     }
 
     public void deletar(Long id) {

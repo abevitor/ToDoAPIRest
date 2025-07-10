@@ -4,6 +4,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -15,11 +17,9 @@ import java.io.IOException;
 @Component
 public class JwFilter extends OncePerRequestFilter {
 
-    private final JwUtil jwUtil;
-
-    public JwFilter(JwUtil jwUtil) {
-        this.jwUtil = jwUtil;
-    }
+    @Autowired
+    @Lazy
+    private JwUtil jwUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
