@@ -20,7 +20,7 @@ public class TarefaService {
 
     public Tarefa buscarPorId(Long id) {
         Optional<Tarefa> tarefa = tarefaRepository.findById(id);
-        return tarefa.orElse(null); // ou lançar exceção, conforme seu design
+        return tarefa.orElse(null); 
     }
 
     public List<Tarefa> listarTodas() {

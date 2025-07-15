@@ -24,6 +24,7 @@ public class Tarefa {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+
     public Long getId() {
         return id;
     }
@@ -42,6 +43,10 @@ public class Tarefa {
 
     public LocalDate getDataCriacao() {
         return dataCriacao;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     public void setId(Long id) {
@@ -64,6 +69,8 @@ public class Tarefa {
         this.dataCriacao = dataCriacao;
     }
 
-
-    
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }
+
