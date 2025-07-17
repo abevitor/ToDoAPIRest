@@ -11,9 +11,9 @@ import java.util.Date;
 @Component
 public class JwUtil {
 
-    private final String SECRET = "MinhaChaveSuperSecretaQueDeveSerLonga1234567890"; // 32+ chars para HS256
+    private final String SECRET = "MinhaChaveSuperSecretaQueDeveSerLonga1234567890"; 
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
-    private final long EXPIRATION = 86400000; // 1 dia em ms
+    private final long EXPIRATION = 86400000; 
 
     public String gerarToken(String email) {
         return Jwts.builder()

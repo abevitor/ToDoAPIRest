@@ -14,7 +14,7 @@ public class SecurityConfig {
 
     private final JwFilter jwFilter;
 
-    // Injeção via construtor do filtro
+
     public SecurityConfig(JwFilter jwFilter) {
         this.jwFilter = jwFilter;
     }
