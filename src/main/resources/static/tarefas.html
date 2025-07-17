@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Minhas Tarefas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <button id="btnLogout">Sair</button>
+  <div class="container">
+    <header class="top-bar">
+      <h2>Minhas Tarefas</h2>
+    </header>
+
+    <form id="formNovaTarefa" class="form-tarefa">
+      <input type="text" id="titulo" placeholder="Título da tarefa" required />
+      <input type="text" id="descricao" placeholder="Descrição da tarefa" required />
+    </form>
+    <button type="submit" form="formNovaTarefa">Adicionar Tarefa</button>
+
+    <div id="tarefasContainer" class="tarefas-container"></div>
+  </div>
+
+  <script src="tarefas.js"></script>
+</body>
+</html>
+
+
+
+
