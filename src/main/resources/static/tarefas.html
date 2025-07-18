@@ -1,29 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <title>Minhas Tarefas</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
 <body>
-  <button id="btnLogout">Sair</button>
-  <div class="container">
-    <header class="top-bar">
-      <h2>Minhas Tarefas</h2>
-    </header>
+  <header class="site-header">
+    <link rel="stylesheet" href="styles.css">
+    <h1>Minhas Tarefas</h1>
+  </header>
 
-    <form id="formNovaTarefa" class="form-tarefa">
-      <input type="text" id="titulo" placeholder="Título da tarefa" required />
-      <input type="text" id="descricao" placeholder="Descrição da tarefa" required />
-    </form>
-    <button type="submit" form="formNovaTarefa">Adicionar Tarefa</button>
+  <main>
+    <section class="form-section">
+      <button id="btnLogout">Sair</button>
+      <form id="formNovaTarefa" class="form-tarefa">
+        <input type="text" id="titulo" placeholder="Título da tarefa" required />
+        <input type="text" id="descricao" placeholder="Descrição da tarefa" required />
+        <button type="submit">Adicionar Tarefa</button>
+      </form>
+    </section>
 
-    <div id="tarefasContainer" class="tarefas-container"></div>
-  </div>
+    <section id="tarefasContainer" class="tarefas-container">
+      
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Sistema de Tarefas. Todos os direitos reservados.</p>
+  </footer>
 
   <script src="tarefas.js"></script>
 </body>
-</html>
+
 
 
 

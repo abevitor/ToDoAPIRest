@@ -20,6 +20,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarTarefas();
 
+  function expandirTarefa(botao) {
+  const tarefa = botao.closest('.tarefa');
+  tarefa.classList.toggle('expandida');
+}
+
+function editarTarefa(id) {
+  alert("Função de editar tarefa: " + id);
+  
+}
+
+function apagarTarefa(id) {
+  if (confirm("Deseja apagar esta tarefa?")) {
+
+    console.log("Tarefa apagada:", id);
+  }
+}
+
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
