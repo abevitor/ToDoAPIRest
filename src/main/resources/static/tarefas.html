@@ -1,12 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minhas Tarefas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 <body>
   <header class="site-header">
-    <link rel="stylesheet" href="styles.css">
     <h1>Minhas Tarefas</h1>
+    <button id="btnLogout" class="btnLogout">Sair</button>
   </header>
 
   <main>
     <section class="form-section">
-      <button id="btnLogout">Sair</button>
       <form id="formNovaTarefa" class="form-tarefa">
         <input type="text" id="titulo" placeholder="Título da tarefa" required />
         <input type="text" id="descricao" placeholder="Descrição da tarefa" required />
@@ -14,9 +21,7 @@
       </form>
     </section>
 
-    <section id="tarefasContainer" class="tarefas-container">
-      
-    </section>
+    <section id="tarefasContainer" class="tarefas-container"></section>
   </main>
 
   <footer class="site-footer">
@@ -25,6 +30,7 @@
 
   <script src="tarefas.js"></script>
 </body>
+</html>
 
 
 

@@ -31,10 +31,21 @@ public class TarefaService {
         return tarefaRepository.save(tarefa);
     }
 
-    public Tarefa atualizar(Long id, Tarefa tarefa) {
-        tarefa.setId(id);
-        return tarefaRepository.save(tarefa);
+    public Tarefa atualizar(Long id, Tarefa novaTarefa) {
+    Optional<Tarefa> tarefaExistenteOpt = tarefaRepository.findById(id);
+    if (tarefaExistenteOpt.isPresent()) {
+        Tarefa tarefaExistente = tarefaExistenteOpt.get();
+        
+        tarefaExistente.setTitulo(novaTarefa.getTitulo());
+        tarefaExistente.setDescricao(novaTarefa.getDescricao());
+        tarefaExistente.setConcluida(novaTarefa.getConcluida());
+        
+        return tarefaRepository.save(tarefaExistente);
+    } else {
+        return null;
     }
+}
+
 
     public void deletar(Long id) {
         tarefaRepository.deleteById(id);
