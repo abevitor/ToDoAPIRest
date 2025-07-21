@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const temaSalvo = localStorage.getItem("tema");
+if (temaSalvo === "light") {
+  document.body.classList.add("light-theme");
+}
   const form = document.querySelector("form");
   const tituloInput = document.getElementById("titulo");
   const descricaoInput = document.getElementById("descricao");
@@ -9,6 +13,20 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
     return;
   }
+
+  
+  const toggleButton = document.getElementById("toggleTheme");
+
+ 
+  if (toggleButton) {
+    toggleButton.addEventListener("click", () => {
+      document.body.classList.toggle("light-theme");
+      const isLight = document.body.classList.contains("light-theme");
+      localStorage.setItem("tema", isLight ? "light" : "dark");
+    });
+  }
+
+
 
   async function carregarTarefas() {
     const resposta = await fetch("http://localhost:8080/tarefas", {
@@ -59,62 +77,68 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         btnEditar.addEventListener("click", () => {
-          const inputTitulo = document.createElement("input");
-          inputTitulo.value = tituloEl.textContent;
-          inputTitulo.classList.add("input-edicao");
+  const inputTitulo = document.createElement("input");
+  inputTitulo.value = tituloEl.textContent;
+  inputTitulo.classList.add("input-edicao");
 
-          const inputDescricao = document.createElement("textarea");
-          inputDescricao.value = descricaoEl.textContent;
-          inputDescricao.classList.add("input-edicao");
+  const inputDescricao = document.createElement("textarea");
+  inputDescricao.value = descricaoEl.textContent;
+  inputDescricao.classList.add("input-edicao");
 
-          const btnSalvar = document.createElement("button");
-          btnSalvar.textContent = "Salvar";
-          btnSalvar.classList.add("editar");
+  // Container para os botões
+  const botoesEdicaoDiv = document.createElement("div");
+  botoesEdicaoDiv.classList.add("botoes-edicao");
 
-          const btnCancelar = document.createElement("button");
-          btnCancelar.textContent = "Cancelar";
-          btnCancelar.classList.add("apagar");
+  const btnSalvar = document.createElement("button");
+  btnSalvar.textContent = "Salvar";
+  btnSalvar.classList.add("editar");
 
-          tituloEl.style.display = "none";
-          descricaoEl.style.display = "none";
-          botoesDiv.style.display = "none";
+  const btnCancelar = document.createElement("button");
+  btnCancelar.textContent = "Cancelar";
+  btnCancelar.classList.add("apagar");
 
-          div.appendChild(inputTitulo);
-          div.appendChild(inputDescricao);
-          div.appendChild(btnSalvar);
-          div.appendChild(btnCancelar);
+  botoesEdicaoDiv.appendChild(btnSalvar);
+  botoesEdicaoDiv.appendChild(btnCancelar);
 
-          btnCancelar.addEventListener("click", () => {
-            inputTitulo.remove();
-            inputDescricao.remove();
-            btnSalvar.remove();
-            btnCancelar.remove();
-            tituloEl.style.display = "block";
-            descricaoEl.style.display = "block";
-            botoesDiv.style.display = "flex";
-          });
+  tituloEl.style.display = "none";
+  descricaoEl.style.display = "none";
+  botoesDiv.style.display = "none";
 
-          btnSalvar.addEventListener("click", async () => {
-            const novoTitulo = inputTitulo.value.trim();
-            const novaDescricao = inputDescricao.value.trim();
-            if (!novoTitulo || !novaDescricao) {
-              alert("Preencha todos os campos.");
-              return;
-            }
+  div.appendChild(inputTitulo);
+  div.appendChild(inputDescricao);
+  div.appendChild(botoesEdicaoDiv);
 
-            const resp = await fetch(`http://localhost:8080/tarefas/${tarefa.id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-              },
-              body: JSON.stringify({ titulo: novoTitulo, descricao: novaDescricao })
-            });
+  btnCancelar.addEventListener("click", () => {
+    inputTitulo.remove();
+    inputDescricao.remove();
+    botoesEdicaoDiv.remove();
+    tituloEl.style.display = "block";
+    descricaoEl.style.display = "block";
+    botoesDiv.style.display = "flex";
+  });
 
-            if (resp.ok) carregarTarefas();
-            else alert("Erro ao salvar alterações.");
-          });
-        });
+  btnSalvar.addEventListener("click", async () => {
+    const novoTitulo = inputTitulo.value.trim();
+    const novaDescricao = inputDescricao.value.trim();
+    if (!novoTitulo || !novaDescricao) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+
+    const resp = await fetch(`http://localhost:8080/tarefas/${tarefa.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ titulo: novoTitulo, descricao: novaDescricao })
+    });
+
+    if (resp.ok) carregarTarefas();
+    else alert("Erro ao salvar alterações.");
+  });
+});
+
       });
     } else {
       alert("Erro ao carregar tarefas");
@@ -152,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarTarefas();
 
-  // --- Modal Expandir ---
   function abrirModal(tarefa) {
     const modal = document.createElement("div");
     modal.className = "modal-expandida";

@@ -11,6 +11,17 @@ document.getElementById("cadastroForm").addEventListener("submit", async functio
     body: JSON.stringify({ nome, email, senha })
   });
 
+  const toggleButton = document.getElementById("toggleTheme");
+
+ 
+  if (toggleButton) {
+    toggleButton.addEventListener("click", () => {
+      document.body.classList.toggle("light-theme");
+      const isLight = document.body.classList.contains("light-theme");
+      localStorage.setItem("tema", isLight ? "light" : "dark");
+    });
+  }
+
   if (resposta.ok) {
     document.getElementById("mensagemCadastro").innerText = "Cadastro realizado com sucesso!";
     setTimeout(() => {

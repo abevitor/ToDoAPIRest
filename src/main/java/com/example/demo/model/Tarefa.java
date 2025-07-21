@@ -12,8 +12,9 @@ public class Tarefa {
     private Long id;
 
     @NotBlank
+    @Lob
     private String titulo;
-
+    @Lob
     private String descricao;
     
     private LocalDate dataCriacao = LocalDate.now();
