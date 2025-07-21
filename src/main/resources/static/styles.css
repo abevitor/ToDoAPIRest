@@ -6,11 +6,12 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #1c1c1e;
+  background-color: #3d3d41;
   color: #f1f2f6;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;  /* centro horizontal */
+  align-items: center;      /* centro vertical */
 }
 
 /* HEADER */
@@ -45,13 +46,15 @@ body {
 /* CONTAINER */
 .container, .form-section {
   flex: none;
-  max-width: 500px;
-  margin: 6rem auto 5rem;
+  width: 500px;
+  max-width: 1000px;
+  margin: 0 auto;
   padding: 2rem;
   background-color: #2f3542;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
+
 
 /* FORM */
 form {
@@ -162,20 +165,17 @@ button:hover {
   cursor: pointer;
 }
 
-
 .botoes {
   display: flex;
-  flex-direction: row; /* alinhamento horizontal */
-  gap: 0.5rem;         /* espaçamento entre os botões */
+  justify-content: flex-start;
+  gap: 0.5rem;
   position: absolute;
-  bottom: 10px;        /* fixar na parte inferior */
-  right: 10px;
-  z-index: 2;
-  justify-content: flex-start; /* botões alinhados à direita */
-  width: calc(100% - 20px);  /* ocupar quase toda largura menos as margens */
-  padding-right: 10px;        /* afastar da borda direita */
-  box-sizing: border-box;
+  margin-top: auto;       /* joga os botões para o final da .tarefa */
+  margin-bottom: 0.5rem;  /* você pode ajustar esse valor como quiser */
 }
+
+
+
 
 .botoes button {
   flex: none;       /* não crescer */
@@ -320,6 +320,38 @@ textarea.input-edicao {
 .botoes-edicao button.apagar:hover {
   background-color: #c0392b;
 }
+
+.tarefa h3 {
+  margin-top: 2.8rem; /* Espaço entre os botões e o conteúdo */
+}
+
+/* Scrollbar padrão (aplicado ao body e qualquer container scrollável) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2f3542; /* fundo da trilha */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #57606f; /* barra de rolagem */
+  border-radius: 8px;
+  border: 2px solid #2f3542;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #747d8c;
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #57606f #2f3542;
+}
+
 
 
 
