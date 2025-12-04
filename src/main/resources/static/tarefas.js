@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const temaSalvo = localStorage.getItem("tema");
-if (temaSalvo === "light") {
-  document.body.classList.add("light-theme");
-}
-  const form = document.querySelector("form");
+  if (temaSalvo === "light") {
+    document.body.classList.add("light-theme");
+  }
+
+  const form = document.querySelector("#formNovaTarefa");
   const tituloInput = document.getElementById("titulo");
   const descricaoInput = document.getElementById("descricao");
   const tarefasContainer = document.querySelector(".tarefas-container");
@@ -14,134 +15,136 @@ if (temaSalvo === "light") {
     return;
   }
 
-  
-  const toggleButton = document.getElementById("toggleTheme");
-
- 
-  if (toggleButton) {
-    toggleButton.addEventListener("click", () => {
-      document.body.classList.toggle("light-theme");
-      const isLight = document.body.classList.contains("light-theme");
-      localStorage.setItem("tema", isLight ? "light" : "dark");
-    });
-  }
-
-
-
   async function carregarTarefas() {
-    const resposta = await fetch("http://localhost:8080/tarefas", {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
-
-    if (resposta.ok) {
-      const tarefas = await resposta.json();
-      tarefasContainer.innerHTML = "";
-
-      tarefas.forEach(tarefa => {
-        const div = document.createElement("div");
-        div.classList.add("tarefa");
-
-        div.innerHTML = `
-          <div class="botoes">
-            <button class="editar">Editar</button>
-            <button class="apagar">Apagar</button>
-            <button class="expandir">Expandir</button>
-          </div>
-          <h3>${tarefa.titulo}</h3>
-          <p>${tarefa.descricao}</p>
-          <small>Criada em: ${new Date(tarefa.dataCriacao).toLocaleDateString()}</small>
-        `;
-
-        tarefasContainer.appendChild(div);
-
-        const btnEditar = div.querySelector(".editar");
-        const btnApagar = div.querySelector(".apagar");
-        const btnExpandir = div.querySelector(".expandir");
-        const tituloEl = div.querySelector("h3");
-        const descricaoEl = div.querySelector("p");
-        const botoesDiv = div.querySelector(".botoes");
-
-        btnExpandir.addEventListener("click", () => abrirModal(tarefa));
-
-        btnApagar.addEventListener("click", async () => {
-          if (confirm("Deseja apagar esta tarefa?")) {
-            const resp = await fetch(`http://localhost:8080/tarefas/${tarefa.id}`, {
-              method: "DELETE",
-              headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (resp.ok) carregarTarefas();
-            else alert("Erro ao apagar tarefa");
-          }
-        });
-
-        btnEditar.addEventListener("click", () => {
-  const inputTitulo = document.createElement("input");
-  inputTitulo.value = tituloEl.textContent;
-  inputTitulo.classList.add("input-edicao");
-
-  const inputDescricao = document.createElement("textarea");
-  inputDescricao.value = descricaoEl.textContent;
-  inputDescricao.classList.add("input-edicao");
-
-  // Container para os botões
-  const botoesEdicaoDiv = document.createElement("div");
-  botoesEdicaoDiv.classList.add("botoes-edicao");
-
-  const btnSalvar = document.createElement("button");
-  btnSalvar.textContent = "Salvar";
-  btnSalvar.classList.add("editar");
-
-  const btnCancelar = document.createElement("button");
-  btnCancelar.textContent = "Cancelar";
-  btnCancelar.classList.add("apagar");
-
-  botoesEdicaoDiv.appendChild(btnSalvar);
-  botoesEdicaoDiv.appendChild(btnCancelar);
-
-  tituloEl.style.display = "none";
-  descricaoEl.style.display = "none";
-  botoesDiv.style.display = "none";
-
-  div.appendChild(inputTitulo);
-  div.appendChild(inputDescricao);
-  div.appendChild(botoesEdicaoDiv);
-
-  btnCancelar.addEventListener("click", () => {
-    inputTitulo.remove();
-    inputDescricao.remove();
-    botoesEdicaoDiv.remove();
-    tituloEl.style.display = "block";
-    descricaoEl.style.display = "block";
-    botoesDiv.style.display = "flex";
-  });
-
-  btnSalvar.addEventListener("click", async () => {
-    const novoTitulo = inputTitulo.value.trim();
-    const novaDescricao = inputDescricao.value.trim();
-    if (!novoTitulo || !novaDescricao) {
-      alert("Preencha todos os campos.");
-      return;
-    }
-
-    const resp = await fetch(`http://localhost:8080/tarefas/${tarefa.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ titulo: novoTitulo, descricao: novaDescricao })
-    });
-
-    if (resp.ok) carregarTarefas();
-    else alert("Erro ao salvar alterações.");
-  });
-});
-
+    try {
+      const resposta = await fetch("http://localhost:8080/tarefas", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
-    } else {
-      alert("Erro ao carregar tarefas");
+
+      if (resposta.ok) {
+        const tarefas = await resposta.json();
+        tarefasContainer.innerHTML = "";
+
+        tarefas.forEach(tarefa => {
+          const div = document.createElement("div");
+          div.classList.add("tarefa");
+
+          div.innerHTML = `
+            <div class="botoes">
+              <button class="editar">Editar</button>
+              <button class="apagar">Apagar</button>
+              <button class="expandir">Expandir</button>
+            </div>
+            <h3></h3>
+            <p></p>
+            <small></small>
+          `;
+
+          const tituloEl = div.querySelector("h3");
+          const descricaoEl = div.querySelector("p");
+          const smallEl = div.querySelector("small");
+
+          tituloEl.textContent = tarefa.titulo || "";
+          descricaoEl.textContent = tarefa.descricao || "";
+          smallEl.textContent = `Criada em: ${new Date(tarefa.dataCriacao).toLocaleDateString()}`;
+
+          tarefasContainer.appendChild(div);
+
+          const btnEditar = div.querySelector(".editar");
+          const btnApagar = div.querySelector(".apagar");
+          const btnExpandir = div.querySelector(".expandir");
+          const botoesDiv = div.querySelector(".botoes");
+
+          btnExpandir.addEventListener("click", () => abrirModal(tarefa));
+
+          btnApagar.addEventListener("click", async () => {
+            if (confirm("Deseja apagar esta tarefa?")) {
+              try {
+                const resp = await fetch(`http://localhost:8080/tarefas/${tarefa.id}`, {
+                  method: "DELETE",
+                  headers: { "Authorization": `Bearer ${token}` }
+                });
+                if (resp.ok) carregarTarefas();
+                else alert("Erro ao apagar tarefa");
+              } catch (err) {
+                alert("Erro de rede: " + err.message);
+              }
+            }
+          });
+
+          btnEditar.addEventListener("click", () => {
+            const inputTitulo = document.createElement("input");
+            inputTitulo.value = tituloEl.textContent;
+            inputTitulo.classList.add("input-edicao");
+
+            const inputDescricao = document.createElement("textarea");
+            inputDescricao.value = descricaoEl.textContent;
+            inputDescricao.classList.add("input-edicao");
+
+            const botoesEdicaoDiv = document.createElement("div");
+            botoesEdicaoDiv.classList.add("botoes-edicao");
+
+            const btnSalvar = document.createElement("button");
+            btnSalvar.textContent = "Salvar";
+            btnSalvar.classList.add("editar");
+
+            const btnCancelar = document.createElement("button");
+            btnCancelar.textContent = "Cancelar";
+            btnCancelar.classList.add("apagar");
+
+            botoesEdicaoDiv.appendChild(btnSalvar);
+            botoesEdicaoDiv.appendChild(btnCancelar);
+
+            tituloEl.style.display = "none";
+            descricaoEl.style.display = "none";
+            botoesDiv.style.display = "none";
+
+            div.appendChild(inputTitulo);
+            div.appendChild(inputDescricao);
+            div.appendChild(botoesEdicaoDiv);
+
+            btnCancelar.addEventListener("click", () => {
+              inputTitulo.remove();
+              inputDescricao.remove();
+              botoesEdicaoDiv.remove();
+              tituloEl.style.display = "block";
+              descricaoEl.style.display = "block";
+              botoesDiv.style.display = "flex";
+            });
+
+            btnSalvar.addEventListener("click", async () => {
+              const novoTitulo = inputTitulo.value.trim();
+              const novaDescricao = inputDescricao.value.trim();
+              if (!novoTitulo || !novaDescricao) {
+                alert("Preencha todos os campos.");
+                return;
+              }
+
+              try {
+                const resp = await fetch(`http://localhost:8080/tarefas/${tarefa.id}`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                  },
+                  body: JSON.stringify({ titulo: novoTitulo, descricao: novaDescricao })
+                });
+
+                if (resp.ok) carregarTarefas();
+                else alert("Erro ao salvar alterações.");
+              } catch (err) {
+                alert("Erro de rede: " + err.message);
+              }
+            });
+          });
+        });
+      } else {
+        alert("Erro ao carregar tarefas");
+      }
+    } catch (err) {
+      alert("Erro de rede: " + err.message);
     }
   }
 
@@ -151,21 +154,25 @@ if (temaSalvo === "light") {
     const descricao = descricaoInput.value.trim();
     if (!titulo || !descricao) return;
 
-    const resp = await fetch("http://localhost:8080/tarefas", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ titulo, descricao })
-    });
+    try {
+      const resp = await fetch("http://localhost:8080/tarefas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ titulo, descricao })
+      });
 
-    if (resp.ok) {
-      tituloInput.value = "";
-      descricaoInput.value = "";
-      carregarTarefas();
-    } else {
-      alert("Erro ao adicionar tarefa");
+      if (resp.ok) {
+        tituloInput.value = "";
+        descricaoInput.value = "";
+        carregarTarefas();
+      } else {
+        alert("Erro ao adicionar tarefa");
+      }
+    } catch (err) {
+      alert("Erro de rede: " + err.message);
     }
   });
 

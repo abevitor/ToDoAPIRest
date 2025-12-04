@@ -39,15 +39,21 @@ public class JwFilter extends OncePerRequestFilter {
                 String email = jwUtil.getEmailToken(token);
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    Usuario usuario = usuarioService.buscarPorEmail(email);
+                    Usuario usuario;
+                    try {
+                        usuario = usuarioService.buscarPorEmail(email);
+                    } catch (RuntimeException e) {
+                        usuario = null;
+                    }
 
-                    UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                            usuario.getEmail(), null, Collections.emptyList()
-                        );
+                    if (usuario != null) {
+                        // defino o usuario como principal para poder recuperar depois (principal instanceof Usuario)
+                        UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(usuario, null, Collections.emptyList());
 
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
             }
         }

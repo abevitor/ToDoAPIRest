@@ -30,7 +30,10 @@ public class AuthController {
 
         if (usuario.isPresent() && passwordEncoder.matches(loginData.getSenha(), usuario.get().getSenha())) {
             String token = jwUtil.gerarToken(usuario.get().getEmail());
+            // retorno simples (texto) — o front atual usa resposta.text()
             return ResponseEntity.ok().body(token);
+            // alternativa JSON:
+            // return ResponseEntity.ok(Map.of("token", token));
         }
 
         return ResponseEntity.status(401).body("Credenciais inválidas");

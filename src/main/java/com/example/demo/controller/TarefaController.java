@@ -31,16 +31,30 @@ public class TarefaController {
     }
 
     @GetMapping
-public List<Tarefa> listarDoUsuarioLogado(Principal principal) {
-    String email = principal.getName();
-    Usuario usuario = usuarioService.buscarPorEmail(email);
-    return tarefaService.listarPorUsuario(usuario.getId());
-}
+    public List<Tarefa> listarDoUsuarioLogado(Principal principal) {
+        // se o principal for instancia de Usuario (definido no JwFilter), use direto
+        if (principal instanceof org.springframework.security.core.Authentication
+                && ((org.springframework.security.core.Authentication) principal).getPrincipal() instanceof Usuario) {
+            Usuario usuario = (Usuario) ((org.springframework.security.core.Authentication) principal).getPrincipal();
+            return tarefaService.listarPorUsuario(usuario.getId());
+        }
+
+        // fallback: tentar achar por email
+        String email = principal.getName();
+        Usuario usuario = usuarioService.buscarPorEmail(email);
+        return tarefaService.listarPorUsuario(usuario.getId());
+    }
 
     @PostMapping
     public Tarefa criarTarefa(@RequestBody Tarefa tarefa, Principal principal) {
-        String email = principal.getName(); 
-        Usuario usuario = usuarioService.buscarPorEmail(email); 
+        Usuario usuario;
+        if (principal instanceof org.springframework.security.core.Authentication
+                && ((org.springframework.security.core.Authentication) principal).getPrincipal() instanceof Usuario) {
+            usuario = (Usuario) ((org.springframework.security.core.Authentication) principal).getPrincipal();
+        } else {
+            String email = principal.getName();
+            usuario = usuarioService.buscarPorEmail(email);
+        }
         tarefa.setUsuario(usuario);
         return tarefaService.salvar(tarefa);
     }
