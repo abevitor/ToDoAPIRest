@@ -21,6 +21,10 @@ public class Tarefa {
 
     private boolean concluida = false;
 
+    private LocalDate dataLimite;
+
+    private int diasAviso;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -73,5 +77,22 @@ public class Tarefa {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public LocalDate getDataLimite() {
+    return dataLimite;
+}
+
+public void setDataLimite(LocalDate dataLimite) {
+    this.dataLimite = dataLimite;
+}
+
+public int getDiasAviso() {
+    return diasAviso;
+}
+
+public void setDiasAviso(int diasAviso) {
+    this.diasAviso = diasAviso;
+}
+
 }
 
