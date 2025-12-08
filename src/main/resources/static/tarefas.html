@@ -1,45 +1,84 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Minhas Tarefas</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minhas Tarefas</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <header class="site-header">
-  <h1>Minhas Tarefas</h1>
-  <div class="header-actions">
-    
-    <button id="btnLogout" class="btnLogout">Sair</button>
-  </div>
-</header>
+    <!-- HEADER -->
+    <header class="site-header">
+        <h1>Minhas Tarefas</h1>
 
+        <div class="header-actions">
+            <button id="btnLogout" class="btnLogout">Sair</button>
+        </div>
+    </header>
 
-  <main>
-    <section class="form-section">
-      <form id="formNovaTarefa" class="form-tarefa">
-        <input type="text" id="titulo" placeholder="Título da tarefa" required />
-        <input type="text" id="descricao" placeholder="Descrição da tarefa" required />
-        <button type="submit">Adicionar Tarefa</button>
-      </form>
-    </section>
+    <!-- MAIN -->
+    <main>
+        <!-- FORM DE NOVA TAREFA -->
+        <section class="form-section">
+            <form id="formNovaTarefa" class="form-tarefa" autocomplete="off">
 
-    <section id="tarefasContainer" class="tarefas-container"></section>
-  </main>
+                <input type="text" id="titulo" placeholder="Título da tarefa" required />
 
-  <footer class="site-footer">
-    <p>&copy; 2025 Sistema de Tarefas. Todos os direitos reservados.</p>
-  </footer>
-  
-  <script src="common-theme.js"></script>
-  <script src="tarefas.js"></script>
-   
+                <textarea id="descricao" placeholder="Descrição da tarefa" rows="2" required></textarea>
+
+                <div class="input-row">
+                    <label for="dataLimite" class="sr-only">Data limite</label>
+                    <input type="date" id="dataLimite" aria-label="Data limite" />
+
+                    <label for="horaLimite" class="sr-only">Hora limite</label>
+                    <input type="time" id="horaLimite" aria-label="Hora limite" />
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit">Adicionar Tarefa</button>
+                </div>
+
+                <div id="formFeedback" class="mensagem" role="status" aria-live="polite"></div>
+            </form>
+        </section>
+
+        <!-- LISTA DE TAREFAS -->
+        <section id="tarefasContainer" class="tarefas-container" aria-live="polite">
+        </section>
+    </main>
+
+    <!-- MODAL DE EDIÇÃO -->
+    <div id="editModal" class="modal" style="display:none;">
+        <div class="modal-conteudo edit-modal">
+            
+            <h2>Editar tarefa</h2>
+
+            <label for="editTitulo">Título</label>
+            <input id="editTitulo" type="text" />
+
+            <label for="editDescricao">Descrição</label>
+            <textarea id="editDescricao" rows="3"></textarea>
+
+            <div class="input-row">
+                <input id="editDataLimite" type="date" />
+                <input id="editHoraLimite" type="time" />
+            </div>
+
+            <div class="botoes-edicao">
+                <button id="saveEdit" class="editar">Salvar</button>
+                <button id="cancelEdit" class="apagar">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p>&copy; 2025 Sistema de Tarefas. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="common-theme.js"></script>
+    <script src="tarefas.js"></script>
 </body>
 </html>
-
-
-
-
-
-

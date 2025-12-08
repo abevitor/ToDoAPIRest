@@ -20,6 +20,7 @@ public class TarefaController {
     @Autowired
     private UsuarioService usuarioService;
 
+    // lista tarefas de um usuário específico (admin)
     @GetMapping("/usuario/{usuarioId}")
     public List<Tarefa> listarPorUsuario(@PathVariable Long usuarioId) {
         return tarefaService.listarPorUsuario(usuarioId);
@@ -30,42 +31,50 @@ public class TarefaController {
         return tarefaService.buscarPorId(id);
     }
 
+    // lista do usuário logado
     @GetMapping
     public List<Tarefa> listarDoUsuarioLogado(Principal principal) {
-        // se o principal for instancia de Usuario (definido no JwFilter), use direto
-        if (principal instanceof org.springframework.security.core.Authentication
-                && ((org.springframework.security.core.Authentication) principal).getPrincipal() instanceof Usuario) {
-            Usuario usuario = (Usuario) ((org.springframework.security.core.Authentication) principal).getPrincipal();
-            return tarefaService.listarPorUsuario(usuario.getId());
-        }
 
-        // fallback: tentar achar por email
-        String email = principal.getName();
-        Usuario usuario = usuarioService.buscarPorEmail(email);
+        Usuario usuario = extrairUsuarioLogado(principal);
         return tarefaService.listarPorUsuario(usuario.getId());
     }
 
+    // cria tarefa
     @PostMapping
     public Tarefa criarTarefa(@RequestBody Tarefa tarefa, Principal principal) {
-        Usuario usuario;
-        if (principal instanceof org.springframework.security.core.Authentication
-                && ((org.springframework.security.core.Authentication) principal).getPrincipal() instanceof Usuario) {
-            usuario = (Usuario) ((org.springframework.security.core.Authentication) principal).getPrincipal();
-        } else {
-            String email = principal.getName();
-            usuario = usuarioService.buscarPorEmail(email);
-        }
+
+        Usuario usuario = extrairUsuarioLogado(principal);
         tarefa.setUsuario(usuario);
+
         return tarefaService.salvar(tarefa);
     }
 
+    // edita tarefa (inclusive dataLimite e diasAviso)
     @PutMapping("/{id}")
-    public Tarefa atualizarTarefa(@PathVariable Long id, @RequestBody Tarefa tarefa) {
+    public Tarefa atualizarTarefa(
+            @PathVariable Long id,
+            @RequestBody Tarefa tarefa
+    ) {
         return tarefaService.atualizar(id, tarefa);
     }
 
     @DeleteMapping("/{id}")
     public void deletarTarefa(@PathVariable Long id) {
         tarefaService.deletar(id);
+    }
+
+    // -------------------------------------------
+    // MÉTODO QUE CENTRALIZA A LÓGICA DO USUÁRIO LOGADO
+    // -------------------------------------------
+    private Usuario extrairUsuarioLogado(Principal principal) {
+
+        if (principal instanceof org.springframework.security.core.Authentication auth &&
+                auth.getPrincipal() instanceof Usuario) {
+            return (Usuario) auth.getPrincipal();
+        }
+
+        // fallback usando e-mail do token
+        String email = principal.getName();
+        return usuarioService.buscarPorEmail(email);
     }
 }

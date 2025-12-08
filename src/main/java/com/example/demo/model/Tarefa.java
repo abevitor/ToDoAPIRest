@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 public class Tarefa {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,85 +14,41 @@ public class Tarefa {
     @NotBlank
     @Lob
     private String titulo;
+
     @Lob
     private String descricao;
-    
+
     private LocalDate dataCriacao = LocalDate.now();
 
     private boolean concluida = false;
 
+    // data em que a tarefa vence
     private LocalDate dataLimite;
 
+    // quantos dias antes a notificação será enviada
     private int diasAviso;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+   
+    public Long getId() { return id; }
+    public String getTitulo() { return titulo; }
+    public String getDescricao() { return descricao; }
+    public boolean getConcluida() { return concluida; }
+    public LocalDate getDataCriacao() { return dataCriacao; }
+    public Usuario getUsuario() { return usuario; }
+    public LocalDate getDataLimite() { return dataLimite; }
+    public int getDiasAviso() { return diasAviso; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public boolean getConcluida() {
-        return concluida;
-    }
-
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitulo(String titulo){
-        this.titulo = titulo;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public void setConcluida(boolean concluida) {
-        this.concluida = concluida;
-    }
-
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public LocalDate getDataLimite() {
-    return dataLimite;
-}
-
-public void setDataLimite(LocalDate dataLimite) {
-    this.dataLimite = dataLimite;
-}
-
-public int getDiasAviso() {
-    return diasAviso;
-}
-
-public void setDiasAviso(int diasAviso) {
-    this.diasAviso = diasAviso;
-}
-
+    public void setId(Long id) { this.id = id; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public void setConcluida(boolean concluida) { this.concluida = concluida; }
+    public void setDataCriacao(LocalDate dataCriacao) { this.dataCriacao = dataCriacao; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+    public void setDataLimite(LocalDate dataLimite) { this.dataLimite = dataLimite; }
+    public void setDiasAviso(int diasAviso) { this.diasAviso = diasAviso; }
 }
 
