@@ -283,6 +283,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     editModal.style.display = "flex";
+    // Força reflow para garantir que a animação funcione
+    editModal.offsetHeight;
+    // Adiciona a classe show para ativar a animação
+    setTimeout(() => {
+      editModal.classList.add("show");
+    }, 10);
+  }
+
+  // função para fechar modal com animação
+  function fecharModal() {
+    editModal.classList.remove("show");
+    setTimeout(() => {
+      editModal.style.display = "none";
+      editarTaskId = null;
+    }, 300); // tempo da animação
   }
 
   // salvar edição
@@ -312,8 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (resp.ok) {
-        editModal.style.display = "none";
-        editarTaskId = null;
+        fecharModal();
         carregarTarefas();
       } else {
         const txt = await resp.text();
@@ -326,8 +340,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // cancelar edição
   cancelEditBtn.addEventListener("click", () => {
-    editModal.style.display = "none";
-    editarTaskId = null;
+    fecharModal();
+  });
+
+  // fechar modal ao clicar no overlay
+  editModal.addEventListener("click", (e) => {
+    if (e.target === editModal) {
+      fecharModal();
+    }
   });
 
   // logout
